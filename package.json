@@ -1,0 +1,48 @@
+{
+  "name": "@wexond/cd",
+  "bin": {
+    "wexond-cd": "./bin/run"
+  },
+  "files": [
+    "./bin",
+    "./lib",
+    "./static"
+  ],
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "wexond-cd",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "scripts": {
+    "dev": "node ./bin/run",
+    "build": "tsc",
+    "clean": "rimraf ./lib",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.9",
+    "@types/rimraf": "^3.0.1",
+    "@types/ssh2": "^0.5.47",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.3",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-prettier": "^3.2.0",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^8.0.11",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^3",
+    "chalk": "^4.1.2",
+    "execa": "^5.1.1"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+
+    "module": "commonjs",
+    "target": "es6",
+    "lib": ["esnext"],
+    "moduleResolution": "node",
+
+    "rootDir": "src",
+    "outDir": "lib"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
