@@ -1,13 +1,12 @@
 {
   "name": "@wexond/cd",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "bin": {
     "wexond-cd": "./bin/run"
   },
   "files": [
-    "./bin",
-    "./lib",
-    "./static"
+    "bin",
+    "lib"
   ],
   "main": "lib/index.js",
   "oclif": {
