@@ -7,11 +7,15 @@ export interface ExecOptions {
   std?: boolean;
 }
 
+const DEFAULT_EXEC_OPTIONS: ExecOptions = { std: true };
+
 export const exec = async (
   command: string,
   args: any[],
-  opts: ExecOptions = { std: true },
+  opts?: ExecOptions,
 ) => {
+  opts = { ...DEFAULT_EXEC_OPTIONS, ...opts };
+
   try {
     return await execa(command, args, {
       cwd: opts?.cwd,
