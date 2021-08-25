@@ -23,7 +23,8 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "devDependencies": {
-    "@types/node": "^16.4.9",
+    "@types/minimatch": "^3.0.5",
+    "@types/node": "^16.7.1",
     "@types/rimraf": "^3.0.1",
     "@types/ssh2": "^0.5.47",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
@@ -43,6 +44,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "chalk": "^4.1.2",
-    "execa": "^5.1.1"
+    "execa": "^5.1.1",
+    "minimatch": "^3.0.4"
   }
 }
