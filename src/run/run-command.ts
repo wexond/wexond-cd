@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command';
-import { FLAG_CACHE } from '../diff/diff-cache';
-import { getRepoDiff } from '../diff/diff-controller';
 
+import { DIFF_FLAGS } from '../diff/diff-command';
+import { getRepoDiff } from '../diff/diff-controller';
 import { runInPackages } from './run-controller';
 
 export class RunCommand extends Command {
@@ -15,7 +15,7 @@ export class RunCommand extends Command {
       description: 'path to repo',
       default: './',
     }),
-    ...FLAG_CACHE,
+    ...DIFF_FLAGS,
   };
 
   static args = [
@@ -26,7 +26,7 @@ export class RunCommand extends Command {
 
   async run() {
     const {
-      flags: { path: rootPath, cache },
+      flags: { path: rootPath, cache, head, origin },
       args: { command },
     } = this.parse(RunCommand);
 
@@ -34,6 +34,8 @@ export class RunCommand extends Command {
 
     const { diffWorkspaces, dependencyInfo } = await getRepoDiff(
       rootPath,
+      head,
+      origin,
       cache,
     );
 

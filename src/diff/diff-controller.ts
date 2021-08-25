@@ -10,8 +10,8 @@ import {
 import { createDiffCache, DiffData, getDiffCache } from './diff-cache';
 
 export interface DiffOptions {
-  gitCurrent?: string;
-  gitPrevious?: string;
+  gitCurrent: string;
+  gitPrevious: string;
   rootPath?: string;
 }
 
@@ -48,7 +48,7 @@ const getPackageWorkingDir = (path: string, relativePath: string) => {
 export const diffWorkspaces = async (
   workspaces: string[],
   packages: WorkspacePackage[],
-  { gitCurrent = 'HEAD', gitPrevious = 'origin/master', rootPath }: DiffOptions,
+  { gitCurrent, gitPrevious, rootPath }: DiffOptions,
 ) => {
   const diff = await runGitDiff(workspaces, gitCurrent, gitPrevious, rootPath);
   const filtered: WorkspacePackage[] = [];
@@ -81,6 +81,8 @@ export const diffWorkspaces = async (
 
 export const getRepoDiff = async (
   rootPath: string,
+  head: string,
+  origin: string,
   cache?: boolean,
 ): Promise<DiffData> => {
   let data = cache ? await getDiffCache(rootPath) : undefined;
@@ -89,7 +91,11 @@ export const getRepoDiff = async (
     const paths = await getWorkspacesPaths(rootPath);
     const packages = await getAllPackages(rootPath, paths);
 
-    const workspaces = await diffWorkspaces(paths, packages, { rootPath });
+    const workspaces = await diffWorkspaces(paths, packages, {
+      rootPath,
+      gitCurrent: head,
+      gitPrevious: origin,
+    });
     const dependencyInfo = getPackagesDependencyInfo(packages);
 
     data = {

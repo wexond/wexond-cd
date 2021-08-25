@@ -5,13 +5,6 @@ import { flags } from '@oclif/command';
 import { PackageDependencyInfo, WorkspacePackage } from '../interfaces';
 import { ensureDir, pathExists } from '../utils';
 
-export const FLAG_CACHE = {
-  cache: flags.boolean({
-    char: 'c',
-    description: 'path to repo',
-  }),
-};
-
 export interface DiffData {
   diffWorkspaces: WorkspacePackage[];
   dependencyInfo: PackageDependencyInfo[];

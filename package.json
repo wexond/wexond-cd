@@ -20,8 +20,7 @@
   "scripts": {
     "dev": "node ./bin/run",
     "build": "tsc",
-    "clean": "rimraf ./lib",
-    "prepublishOnly": "npm run clean && npm run build"
+    "clean": "rimraf ./lib"
   },
   "devDependencies": {
     "@types/minimatch": "^3.0.5",
