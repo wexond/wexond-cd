@@ -1,10 +1,11 @@
-import { stat, mkdir } from 'fs/promises';
+import { constants } from 'fs';
+import { stat, mkdir, access } from 'fs/promises';
 import { basename, dirname } from 'path';
 import rimraf from 'rimraf';
 
 export const pathExists = async (path: string) => {
   try {
-    await stat(path);
+    await access(path, constants.F_OK);
   } catch (err) {
     return false;
   }

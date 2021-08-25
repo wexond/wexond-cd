@@ -1,10 +1,7 @@
 import { Command, flags } from '@oclif/command';
-import {
-  getAllPackages,
-  getWorkspacesPaths,
-} from '../workspace/workspace-controller';
 
-import { diffRepo } from './diff-controller';
+import { FLAG_CACHE } from './diff-cache';
+import { getRepoDiff } from './diff-controller';
 
 export class DiffCommand extends Command {
   static description = 'diffs packages';
@@ -21,23 +18,21 @@ export class DiffCommand extends Command {
       char: 'n',
       description: 'output package name',
     }),
+    ...FLAG_CACHE,
   };
 
   static args = [];
 
   async run() {
     const {
-      flags: { path: rootPath, name },
+      flags: { path: rootPath, name, cache },
     } = this.parse(DiffCommand);
 
-    const workspaces = await getWorkspacesPaths(rootPath);
-    const packages = await getAllPackages(rootPath, workspaces);
-
-    const diff = await diffRepo(workspaces, packages, { rootPath });
+    const { diffWorkspaces } = await getRepoDiff(rootPath, cache);
 
     const res: string[] = name
-      ? diff.map((r) => r.package.name)
-      : diff.map((r) => r.path);
+      ? diffWorkspaces.map((r) => r.package.name)
+      : diffWorkspaces.map((r) => r.path);
 
     this.log(res.join('\n'));
   }

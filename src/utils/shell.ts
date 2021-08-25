@@ -5,6 +5,7 @@ export interface ExecOptions {
   cwd?: string;
   shell?: boolean;
   std?: boolean;
+  throwIfNotFound?: boolean;
 }
 
 const DEFAULT_EXEC_OPTIONS: ExecOptions = { std: true };

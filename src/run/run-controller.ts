@@ -5,10 +5,11 @@ export const getPackagesDependencyInfo = (packages: WorkspacePackage[]) => {
   const names = packages.map((r) => r.package.name);
 
   return packages.map<PackageDependencyInfo>(
-    ({ package: { name, dependencies }, path }) => {
+    ({ package: { name, dependencies, scripts }, path }) => {
       return {
         name,
         path,
+        availableScripts: scripts != null ? Object.keys(scripts) : undefined,
         dependencies:
           dependencies != null
             ? Object.keys(dependencies).filter((dep) => names.includes(dep))
@@ -18,11 +19,10 @@ export const getPackagesDependencyInfo = (packages: WorkspacePackage[]) => {
   );
 };
 
-export const execInPackages = async (
+export const runInPackages = async (
   packages: string[],
   depInfo: PackageDependencyInfo[],
-  command: string,
-  args: string[],
+  script: string,
 ) => {
   const history: string[] = [];
 
@@ -39,7 +39,7 @@ export const execInPackages = async (
       throw new Error(`Couldn't find package ${name}`);
     }
 
-    const { dependencies, path } = info;
+    const { dependencies, path, availableScripts } = info;
 
     for (const dep of dependencies) {
       await execute(dep, [...parentPackages, name]);
@@ -47,9 +47,13 @@ export const execInPackages = async (
 
     history.push(name);
 
-    console.log(`${name}: ${command} ${args.join('')}`);
+    if (availableScripts?.includes(script)) {
+      console.log(`${name}: yarn run ${script}`);
 
-    await exec(command, args, { cwd: path });
+      await exec('yarn', ['run', script], {
+        cwd: path,
+      });
+    }
   };
 
   for (const name of packages) {

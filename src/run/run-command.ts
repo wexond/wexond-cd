@@ -1,11 +1,8 @@
 import { Command, flags } from '@oclif/command';
+import { FLAG_CACHE } from '../diff/diff-cache';
+import { getRepoDiff } from '../diff/diff-controller';
 
-import { diffRepo } from '../diff/diff-controller';
-import {
-  getAllPackages,
-  getWorkspacesPaths,
-} from '../workspace/workspace-controller';
-import { execInPackages, getPackagesDependencyInfo } from './run-controller';
+import { runInPackages } from './run-controller';
 
 export class RunCommand extends Command {
   static description = 'runs command in changed packages';
@@ -18,6 +15,7 @@ export class RunCommand extends Command {
       description: 'path to repo',
       default: './',
     }),
+    ...FLAG_CACHE,
   };
 
   static args = [
@@ -28,25 +26,21 @@ export class RunCommand extends Command {
 
   async run() {
     const {
-      flags: { path: rootPath },
+      flags: { path: rootPath, cache },
       args: { command },
     } = this.parse(RunCommand);
 
     this.log(command);
 
-    const workspaces = await getWorkspacesPaths(rootPath);
-    const packages = await getAllPackages(rootPath, workspaces);
+    const { diffWorkspaces, dependencyInfo } = await getRepoDiff(
+      rootPath,
+      cache,
+    );
 
-    const diff = await diffRepo(workspaces, packages, { rootPath });
-    const dependencyInfo = await getPackagesDependencyInfo(packages);
-
-    const [name, ...args] = command.split(' ');
-
-    await execInPackages(
-      diff.map((r) => r.package.name),
+    await runInPackages(
+      diffWorkspaces.map((r) => r.package.name),
       dependencyInfo,
-      name,
-      args,
+      command,
     );
   }
 }

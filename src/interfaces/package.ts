@@ -4,6 +4,7 @@ export interface IPackage {
   workspaces?: string[];
   wexondcd?: WexondCDOptions;
   dependencies?: string[];
+  scripts?: string[];
 }
 
 export interface WexondCDOptions {
@@ -14,4 +15,5 @@ export interface PackageDependencyInfo {
   name: string;
   path: string;
   dependencies: string[];
+  availableScripts?: string[];
 }

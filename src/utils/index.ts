@@ -1,2 +1,2 @@
 export * from './fs';
-export * from './system';
+export * from './shell';
